@@ -1,57 +1,29 @@
-export const GET_TASKS = 'GET_TASKS';
-export const ADD_TASK = 'ADD_TASK';
-export const COMPLETE_TASK = 'COMPLETE_TASK';
+export const ADD_TODO = 'ADD_TODO';
+export const COMPLETE_TODO = 'COMPLETE_TODO';
+export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 
-const tasks = [
-  {
-    id: 1,
-    type: 'daily',
-    text: 'Check facebook',
-    completed: false
-  },
-  {
-    id: 2,
-    type: 'habit',
-    text: 'Walk up the stairs'
-  },
-  {
-    id: 3,
-    type: 'todo',
-    text: 'Finish Redux tutorial',
-    completed: false
-  },
-  {
-    id: 4,
-    type: 'todo',
-    text: 'Finish Redux slides',
-    completed: true
-  }
-];
+/*
+ * 其它的常量
+ */
 
-export function getTasks() {
-  return {
-    type: GET_TASKS,
-    payload: {
-      tasks
-    }
-  };
+export const VisibilityFilters = {
+  SHOW_ALL: 'SHOW_ALL',
+  SHOW_COMPLETED: 'SHOW_COMPLETED',
+  SHOW_ACTIVE: 'SHOW_ACTIVE'
+};
+
+/*
+ * action 创建函数
+ */
+
+export function addTodo(text) {
+  return { type: ADD_TODO, text }
 }
 
-export function addTask(text, type) {
-  return {
-    type: ADD_TASK,
-    payload: {
-      text,
-      type
-    }
-  };
+export function completeTodo(index) {
+  return { type: COMPLETE_TODO, index }
 }
 
-export function completeTask(id) {
-  return {
-    type: COMPLETE_TASK,
-    payload: {
-      id
-    }
-  };
+export function setVisibilityFilter(filter) {
+  return { type: SET_VISIBILITY_FILTER, filter }
 }

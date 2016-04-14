@@ -1,47 +1,42 @@
-import { GET_TASKS, ADD_TASK, COMPLETE_TASK } from './actions';
+import { combineReducers } from 'redux'
+import { ADD_TODO, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters } from './actions'
+const { SHOW_ALL } = VisibilityFilters
 
-export default rootReducer;
-
-const initialState = {
-  tasks: []
-};
-
-function rootReducer(state = initialState, action) {
-
-  switch(action.type) {
-    case GET_TASKS:
-      return Object.assign({}, state, { tasks: action.payload.tasks });
-    case ADD_TASK:
-      return addTaskReducer(state, action);
-    case COMPLETE_TASK:
-      return completeTaskReducer(state, action);
+function visibilityFilter(state = SHOW_ALL, action) {
+  switch (action.type) {
+    case SET_VISIBILITY_FILTER:
+      return action.filter
     default:
-      return state;
+      return state
   }
-
-  return state;
 }
 
-function addTaskReducer(state, action) {
-  var task = action.payload;
-  task.completed = false;
-
-  var lastTask = state.tasks[state.tasks.length - 1];
-
-  task.id = lastTask.id++;
-
-  return Object.assign({}, state, { tasks: [...state.tasks, task] });
+function todos(state = [], action) {
+  switch (action.type) {
+    case ADD_TODO:
+      return [
+        ...state,
+        {
+          text: action.text,
+          completed: false
+        }
+      ]
+    case COMPLETE_TODO:
+      return [
+        ...state.slice(0, action.index),
+        Object.assign({}, state[action.index], {
+          completed: true
+        }),
+        ...state.slice(action.index + 1)
+      ]
+    default:
+      return state
+  }
 }
 
-function completeTaskReducer(state, action) {
-  var id = action.payload.id;
+const todoApp = combineReducers({
+  visibilityFilter,
+  todos
+})
 
-  return Object.assign({}, state, { tasks: state.tasks.map(task => {
-      if(id === task.id) {
-        return Object.assign({}, task, { completed: true });
-      }
-
-      return task;
-    })
-  });
-}
+export default todoApp

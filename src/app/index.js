@@ -1,12 +1,16 @@
-import { createStore } from 'redux';
-import RootReducer from './reducers';
-import { getTasks, addTask, completeTask } from './actions';
+import React from 'react'
+import { render } from 'react-dom'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import App from './containers/app'
+import todoApp from './reducers'
 
-let store = createStore(RootReducer);
+let store = createStore(todoApp)
 
-let unsubscribe = store.subscribe(() =>
-  console.log(store.getState())
+let rootElement = document.getElementById('root')
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  rootElement
 )
-
-store.dispatch(getTasks());
-unsubscribe();
